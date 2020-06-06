@@ -143,7 +143,25 @@ t.test(sw$growth, ne$growth)
 # using wilcox.test
 wilcox.test(sw$growth, ne$growth)
 ```
+## Part 2, Question 1. Downloading the the whole set of E. coli gene DNA sequences and finding how many sequences are present in the E.coli set.
+in this part, we download the sequence and software packages which will be used in R to get the code working.
+```{r, chunk13, echo=TRUE}
+# downloding the libraries 
+library("seqinr")
+library("rBLAST")
+library("R.utils")
+library("R.utils")
 
+# download the provided E. coli CDS from sequences from Github
+download.file("ftp://ftp.ensemblgenomes.org/pub/bacteria/release-42/fasta/bacteria_0_collection/escherichia_coli_str_k_12_substr_mg1655/cds/Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa.gz",
+destfile = "Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa.gz")
+# delete the fasta file if already exists
+unlink("Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa") 
+# uncompressed the file
+R.utils::gunzip("Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa.gz", overwrite= TRUE)
+# create the blast DB
+makeblastdb("Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa",dbtype = "nucl","-parse_seqids")
+``` 
 
 
 
