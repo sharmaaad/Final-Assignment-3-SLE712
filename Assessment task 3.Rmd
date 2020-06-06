@@ -1,12 +1,12 @@
 ```
 Title: "Assessment task 3.Rmd Report"
 Author: "Aadi Sharma"
-Student ID – “220167207”
-Unit code: “SLE712”
-Submission Date – “12.06.20”
+Student ID – "220167207"   
+Unit code: "SLE712"
+Submission Date – "12.06.20"   
 Output type: html_document
 Theme: cosmo
-Source: 
+Source: https://github.com/sharmaaad/Final-Assignment-3-SLE712.git 
 ```
 ## Part 1, Question 1. Downloading the file named “gene_expression.tsv” in to R, making the row names and showing a table of values for the first six genes
 Here, we are using the download.file() command to import the file from github into R to solve the first 5 questions of the Part 1 assessment. To read into R properly, we have formatted the imported data by setting 'header = TRUE', 'stringsAsFactors = FALSE', and 'row.names = 1'.
@@ -38,5 +38,97 @@ x$mean2 <- rowMeans(x)
 # checking the first six lines of the data
 head(x)
 ```
+## Question 3.  Listing the 10 genes with the highest mean expression 
+In order to find 10 genes with the highest mean expression, we command the re-ordering of the column named 'mean2'.
+
+```{r, chunk4, echo=TRUE}
+# initially, order the column named 'mean2'
+order(x$mean2)
+# then, by using square brackets, we re-order the column
+x[order(-x$mean2),]
+x_sorted <- x[order(-x$mean2),]
+# in the end, by using head() command figured out 10 genes with the highest mean expression
+head(x_sorted,10)
+```
+## Question 4. Determining the number of genes with a mean <10 
+In this section, we are filtering the column named 'mean2' to calculate a mean <10. 
+```{r, chunk5, echo=TRUE}
+# using filter function
+filtered <- subset(x, mean2 > 10)
+# filtering the number of rows
+nrow(filtered)
+```
+## Question 5. Making a histogram plot of the mean values in png format
+In this segment, we use the hist() function to make a histogram plot of the mean values of the column named 'mean2' of the provided data.
+```{r, chunk6, echo=TRUE}
+# using the hist() command on the column named 'mean2' of the data 'x'
+hist(x$mean2)
+# to distribute the data frame properly, dividing it by breaks of 30
+hist(x$mean2,breaks=30)
+```
+## Question 6. Importing the cvs file named “growth_data.csv” into an R object to find out the column names
+Here, we are using the download.file() command to download the file from github into R to solve the last 5 questions of Part 1 of the assessment. To read into R properly with read.csv() command, we have formatted the imported data by setting 'header = TRUE', 'stringsAsFactors = FALSE', and 'row.names = 1'.
+
+```{r, chunk7, echo=TRUE}
+# a link of another data frame is downloaded from GitHub
+download.file("https://raw.githubusercontent.com/markziemann/SLE712_files/master/bioinfo_asst3_part1_files/growth_data.csv", destfile = "growth_data.csv")
+# in order to import "comma separated" values of the data file correctly, we use read.csv() command
+y<-read.csv("growth_data.csv")
+# reading the data frame into R
+# recognising the header
+# avoiding strings to be recognised as Factors
+y <-read.csv("growth_data.csv", header = TRUE, stringsAsFactors = FALSE)
+```
+### Checking the data integrity
+In this section, we are using str() command to make sure that data is recognised as numeric and we are also naming the columns by using the subset function. 
+
+```{r, chunk8, echo=TRUE}
+# checking the structure of the data to confirm that it has numerical and integers
+str(y)
+# to name the columns we can use the subset()command as the data values are 'characters'
+subset(y,Site=="northeast")
+colnames(y)
+````
+## Question 7. Calculating the mean and standard deviation of tree circumference at the start and end of the study at both sites
+Here, we are using subset() command to find out the mean and standard deviation of tree circumference of two different sites which are 'northeast' and 'southwest' from 2004 to 2019.
+
+```{r, chunk9, echo=TRUE}
+# subsetting of the tree circumference at the start and end of the study at 'northeast site'
+ne<-subset(y, Site == "northeast")
+# checking the first six lines of the data frame with head()command
+head(ne)
+# checking the structure of the data with str()command
+str(ne)
+# calculating the mean of tree circumference of 'northeast site' from 2004 to 2019
+mean(ne$Circumf_2004_cm)
+mean(ne$Circumf_2019_cm)
+# calculating standard deviation of tree circumference of 'northeast site' from 2004 to 2019
+sd(ne$Circumf_2004_cm)
+sd(ne$Circumf_2019_cm)
+
+# subsetting of the tree circumference at the start and end of the study at 'southwest site'
+sw<-subset(y, Site == "southwest")
+# checking the first six lines of the data frame with head()command
+head(sw)
+# checking the structure of the data with str()command
+str(sw)
+# the mean of tree circumference of 'southwest site' from 2004 to 2019
+mean(sw$Circumf_2004_cm)
+mean(sw$Circumf_2019_cm)
+# the standard deviation of tree circumference of 'southwest site' from 2004 to 2019
+sd(sw$Circumf_2004_cm)
+sd(sw$Circumf_2019_cm)
+```
+## Question 8.  Creating a box plot of tree circumference at the start and end of the study at both sites
+In this part of the assessment task, we are creating a box plot of tree circumference of northeast and southwest sites from 2004 to 2019 by using boxplot() command. 
+
+```{r, chunk10, echo=TRUE}
+# creating a boxplot of tree circumference of northeast and southwest sites from 2004 to 2019
+boxplot(ne$Circumf_2004_cm, ne$Circumf_2019_cm, sw$Circumf_2004_cm, sw$Circumf_2019_cm, names = c("ne2004", "ne2019", "sw2004", "sw2019"), ylab="circumference (m)", las=2, main= "Tree growth at two plantation sites")
+```
+
+
+
+
 
 
