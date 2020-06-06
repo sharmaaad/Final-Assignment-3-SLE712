@@ -126,6 +126,24 @@ In this part of the assessment task, we are creating a box plot of tree circumfe
 # creating a boxplot of tree circumference of northeast and southwest sites from 2004 to 2019
 boxplot(ne$Circumf_2004_cm, ne$Circumf_2019_cm, sw$Circumf_2004_cm, sw$Circumf_2019_cm, names = c("ne2004", "ne2019", "sw2004", "sw2019"), ylab="circumference (m)", las=2, main= "Tree growth at two plantation sites")
 ```
+## Question 9. Calculate the mean growth over the past 10 years at each site.  
+here we are subtracting the tree circumferences from year 2019 to 2004 of both northeast and southwest sites.
+```{r, chunk11, echo=TRUE}
+# calculating the growth difference by using subtraction command 
+ne$growth <-ne$Circumf_2019 - ne$Circumf_2004_cm
+head(ne)
+sw$growth <-sw$Circumf_2019 - sw$Circumf_2004_cm
+head(sw)
+```
+## Question 10. Use of the t.test and wilcox.test functions to estimate the p-value that the 10 year growth is different at the two sites.   
+In this section, we are applying the the t.test and wilcox.test functions to estimate the p-value.
+```{r, chunk12, echo=TRUE}
+# using t.test
+t.test(sw$growth, ne$growth)
+# using wilcox.test
+wilcox.test(sw$growth, ne$growth)
+```
+
 
 
 
