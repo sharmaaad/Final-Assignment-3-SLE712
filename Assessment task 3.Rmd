@@ -1,0 +1,42 @@
+```
+Title: "Assessment task 3.Rmd Report"
+Author: "Aadi Sharma"
+Student ID – “220167207”
+Unit code: “SLE712”
+Submission Date – “12.06.20”
+Output type: html_document
+Theme: cosmo
+Source: 
+```
+## Part 1, Question 1. Downloading the file named “gene_expression.tsv” in to R, making the row names and showing a table of values for the first six genes
+Here, we are using the download.file() command to import the file from github into R to solve the first 5 questions of the Part 1 assessment. To read into R properly, we have formatted the imported data by setting 'header = TRUE', 'stringsAsFactors = FALSE', and 'row.names = 1'.
+```{r,chunk1, echo=TRUE}
+# a link of the required datafile is downloaded from GitHub
+download.file("https://raw.githubusercontent.com/markziemann/SLE712_files/master/bioinfo_asst3_part1_files/gene_expression.tsv", destfile = "gene_expression.tsv")
+# reading the data frame in to RStudio
+# recognising the header 
+# using the first column as the rownames
+# avoiding strings to be recognised as Factors
+x <-read.table("gene_expression.tsv", header = TRUE, stringsAsFactors = FALSE, row.names = 1)
+``` 
+### Checking the data integrity
+In this section, we are using head()command to read first six lines of the data frame and using str() to make sure that data is recognised as numeric.
+
+```{r, chunk2, echo=TRUE}
+# checking the first six lines of the data frame
+head(x)
+# checking the structure of the data to confirm the presence of numerical and integers data structure
+str(x)
+```
+## Question 2. Making a new column as mean of the other columns and showing a table of values for the first six genes. 
+In this part, we are using subset command to make a new column which will be mean of the other columns.
+
+```{r, chunk3, echo=TRUE}
+# x is the dataframe
+# new column is named 'mean2' to calculate the mean
+x$mean2 <- rowMeans(x)
+# checking the first six lines of the data
+head(x)
+```
+
+
