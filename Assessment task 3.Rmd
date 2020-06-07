@@ -127,7 +127,7 @@ In this part of the assessment task, we are creating a box plot of tree circumfe
 boxplot(ne$Circumf_2004_cm, ne$Circumf_2019_cm, sw$Circumf_2004_cm, sw$Circumf_2019_cm, names = c("ne2004", "ne2019", "sw2004", "sw2019"), ylab="circumference (m)", las=2, main= "Tree growth at two plantation sites")
 ```
 ## Question 9. Calculate the mean growth over the past 10 years at each site.  
-here we are subtracting the tree circumferences from year 2019 to 2004 of both northeast and southwest sites.
+Here we are subtracting the tree circumferences from year 2019 to 2004 of both northeast and southwest sites.
 ```{r, chunk11, echo=TRUE}
 # calculating the growth difference by using subtraction command 
 ne$growth <-ne$Circumf_2019 - ne$Circumf_2004_cm
@@ -143,28 +143,202 @@ t.test(sw$growth, ne$growth)
 # using wilcox.test
 wilcox.test(sw$growth, ne$growth)
 ```
-## Part 2, Question 1. Downloading the the whole set of E. coli gene DNA sequences and finding how many sequences are present in the E.coli set.
-in this part, we download the sequence and software packages which will be used in R to get the code working.
+## Part 2, Question 1. Downloading the prerequisite libraries and sources to solve the question 1. 
+In this part, we download the prerequisite libraries and sources which will be used in R to get the code working. we need seqinr pacakge for processing and analysing the sequence data, R.utils for extracting compressed files and rBLAST for BLAST searches.
 ```{r, chunk13, echo=TRUE}
-# downloding the libraries 
+# downloding the libraries and other sources
 library("seqinr")
+library("R.utils")
 library("rBLAST")
-library("R.utils")
-library("R.utils")
-
-# download the provided E. coli CDS from sequences from Github
+library("Biostrings")
+#provided source
+source("https://raw.githubusercontent.com/markziemann/SLE712_files/master/bioinfo_asst3_part2_files/mutblast_functions.R")
+# provided source
+source("~/projects/SLE712_files/bioinfo_asst3_part2_files/mutblast_functions.R")
+```
+### Importing the whole set of E. coli gene DNA sequences to find the number of sequences present in the E.coli set.
+here, we download the provided file, delete the fast file if any exists by unlinking, uncompress the file by gunziping and eventually create a blast database.
+```{r, chunk14, echo=TRUE}
+# downloading the provided E. coli CDS file
 download.file("ftp://ftp.ensemblgenomes.org/pub/bacteria/release-42/fasta/bacteria_0_collection/escherichia_coli_str_k_12_substr_mg1655/cds/Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa.gz",
 destfile = "Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa.gz")
-# delete the fasta file if already exists
+# deleting the fasta file if already exists
 unlink("Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa") 
-# uncompressed the file
+# uncompressing the file
 R.utils::gunzip("Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa.gz", overwrite= TRUE)
-# create the blast DB
+# creating the blast DB to find out number of sequences present in the E.coli set
 makeblastdb("Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa",dbtype = "nucl","-parse_seqids")
 ``` 
 
+## Question 2. Download the sample fasta sequences to determine the length (in bp) and the proportion of GC bases of the allocated sequence. 
+In this part, after downloading the fasta file, we are reading the assigned sample sequence '33' into R. Then, checking the structure of the file with str() command to determine the length and the proportion of GC bases of the allocated sequence. 
+```{r, chunk14, echo=TRUE}
+# importing the file with download.file()command
+if ( ! file.exists("sample.fa"))
+download.file("https://raw.githubusercontent.com/markziemann/SLE712_files/master/bioinfo_asst3_part2_files/sample.fa", destfile = "sample.fa")  
+# reading it in to R
+sample <- read.fasta("sample.fa")
+# reading my sequence 
+myseq <- sample[[33]]
+myseq
+# checking the data structure of the sequence
+str(myseq)
+# calculating the GC content with seqinr
+seqinr::GC(myseq)
+# calculating the length of the sequence (in bp) with seqinr
+seqinr::getLength(myseq)
+```
+## Question 3. Using blast search to identify the E. coli gene that matches best with top 3 hits including percent identity, E-value and bit scores.
+Here, we sourced a function with library()command to run a blast search in order to find the best matches. 
+```{r, chunk15, echo=TRUE}
+# the function is sourced to run a blast search
+library("Biostrings")
+source("https://raw.githubusercontent.com/markziemann/SLE712_files/master/bioinfo_asst3_part2_files/mutblast_functions.R")
+# run blast search
+myblastn_tab
+res <- myblastn_tab(myseq = mytask, db = "Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa")
+# check the BLAST results with command
+# checking the first six lines of the data frame
+head(res)
+# checking the structure of the data to confirm the presence of numerical and integers data structure
+str(res)
 
+# 'AAC74295' accesion number is found as a top hit which belongs to 'prfA gene'.
+```
 
+## Question 4. Run the mutation function to make a set number of point mutations to the sequence of interest and write an R code to check the number of mismatches between the original and mutated sequence. 
+In this segment, we use a mutation function with the mutator() command to note the point mutations to the sequence. By doing do so, we have created a mutated version of the original given sample sequence '33'. After running the mutator() command few times, we create a pairwise alignment of the mutated versions of the given sample sequence with the help of the library called 'Biostrings'.
+```{r, chunk16, echo=TRUE}
+# create a mutated version of the original given sample sequence '33' by 30
+mutator(myseq=mytask, 30)
+mytask_mut <- mutator(myseq=mytask, 30)
+mytask_mut
+# created a mutated version of mytask_mut
+mytask_mut2 <- mutator(mytask_mut, 100)
+mytask_mut2
+# now created a pairwise alignment of mutated version and original sample sequence '33' to find number of mismatches
+mytask_mut2_ <- DNAString(c2s(mytask_mut2))
+mytask_ <- DNAString(c2s(mytask))
+aln <- Biostrings::pairwiseAlignment(mytask_,mytask_mut2_)
+pid(aln)
+nmismatch(aln)
+```
+## Question 5. Using the provided functions for mutating and BLASTing a sequence, determine the number and proportion of sites.
+Here, We have to run the functions for mutating and BLASTing a sequence to find the number and proportion of sites that need to be altered to prevent the BLAST search from matching the gene of origin. In order to do so, we need to write the blast index first with the help of write.fasta() command and then, run the blast search with N numbers of mismatches by using the command called nrow(res) for each test.
+```{r, chunk17, echo=TRUE}
+# answer, 5
+# first need to write the blast index
+write.fasta(mytask,names="mytask",file.out = "mytask.fa")
+makeblastdb(file="mytask.fa",dbtype = "nucl")
+
+# test with 100 mismatches
+mytask_mut <- mutator(myseq=mytask,100)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+
+# test with 130 mismatches
+mytask_mut <- mutator(myseq=mytask,130)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+
+# test with 150 mismatches
+mytask_mut <- mutator(myseq=mytask,150)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+
+# test with 180 mismatches
+mytask_mut <- mutator(myseq=mytask,180)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+
+# test with 200 mismatches
+mytask_mut <- mutator(myseq=mytask,200)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+
+# test with 220 mismatches
+mytask_mut <- mutator(myseq=mytask,220)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+
+# test with 210 mismatches
+mytask_mut <- mutator(myseq=mytask,210)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+
+# test with 250 mismatches
+mytask_mut <- mutator(myseq=mytask,250)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+
+# test with 300 mismatches
+mytask_mut <- mutator(myseq=mytask,300)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+
+# test with 350 mismatches
+mytask_mut <- mutator(myseq=mytask,350)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+
+# test with 400 mismatches
+mytask_mut <- mutator(myseq=mytask,400)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+
+# test with 450 mismatches
+mytask_mut <- mutator(myseq=mytask,450)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+
+# test with 500 mismatches
+mytask_mut <- mutator(myseq=mytask,500)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+
+# test with 550 mismatches
+mytask_mut <- mutator(myseq=mytask,550)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+
+# test with 600 mismatches
+mytask_mut <- mutator(myseq=mytask,600)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+
+# test with 700 mismatches
+mytask_mut <- mutator(myseq=mytask,700)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+
+# test with 1000 mismatches
+mytask_mut <- mutator(myseq=mytask,1000)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+
+# test with 2000 mismatches
+mytask_mut <- mutator(myseq=mytask,2000)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+```
 
 
 
