@@ -145,7 +145,7 @@ wilcox.test(sw$growth, ne$growth)
 ```
 ## Part 2, Question 1. Downloading the prerequisite libraries and sources to solve the question 1. 
 In this part, we download the prerequisite libraries and sources which will be used in R to get the code working. we need seqinr pacakge for processing and analysing the sequence data, R.utils for extracting compressed files and rBLAST for BLAST searches.
-```{r, chunk13, echo=TRUE}
+```{r, lib}
 # downloding the libraries and other sources
 library("seqinr")
 library("R.utils")
@@ -194,6 +194,11 @@ Here, we sourced a function with library()command to run a blast search in order
 # the function is sourced to run a blast search
 library("Biostrings")
 source("https://raw.githubusercontent.com/markziemann/SLE712_files/master/bioinfo_asst3_part2_files/mutblast_functions.R")
+
+# provided source
+source("~/projects/SLE712_files/bioinfo_asst3_part2_files/mutblast_functions.R")
+
+
 # run blast search
 myblastn_tab
 res <- myblastn_tab(myseq = mytask, db = "Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa")
