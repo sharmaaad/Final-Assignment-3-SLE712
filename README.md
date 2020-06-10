@@ -6,7 +6,7 @@ The assessment task is divided in to two main components. In the first part of t
 Second part of the assignment requires users to advance their knowledge in using Rstudio and Github. In order to solve the problems related to the given gene sequences of microorganisms, functions such as gunzip, blast, routine and mutator are being used in this part of the assessment. 
 
 ## Motivation
-The aim of the assignment is not only to develop the skills of solving bioinformatics-based problems, but it is also empowering the user to access and operate a variety of tools such as seqinr, R.utils, rBLAST, ape, ORFik, Biostrings and tools invented by other users to analyse the limits of blast. Moreover, the task will provide an opportunity to get familiarise with Github, Repository, Readme.md, Markdown format and RStudio which will be very useful in future when working as a part of a professional team on projects related to bioinformatics.
+The aim of the assignment is not only to develop the skills of solving bioinformatics-based problems, but also empower the user to access and operate a variety of tools such as seqinr, R.utils, rBLAST, ape, ORFik, Biostrings and tools invented by other users to analyse the limits of blast. Moreover, the task will provide an opportunity to get familiarise with Github, Repository, Readme.md, Markdown format and RStudio which will be very useful in future when working as a part of a professional team on projects related to bioinformatics.
 
 ## Contents
 + Readme file in Markdown
