@@ -1,15 +1,12 @@
 ```
-Title: "Assessment task 3.Rmd Report"
-Author: "Aadi Sharma"
-Student ID – "220167207"   
-Unit code: "SLE712"
-Submission Date – "12.06.20"   
+Title: "Assessment task 3.Rmd Report, SLE712"
+Source: https://github.com/sharmaaad/Final-Assignment-3-SLE712.git
+Author: "Aadi Sharma, Student ID 220167207"   
 Output type: html_document
 Theme: cosmo
-Source: https://github.com/sharmaaad/Final-Assignment-3-SLE712.git 
 ```
-## Part 1, Question 1. Downloading the file named “gene_expression.tsv” in to R, making the row names and showing a table of values for the first six genes
-Here, we are using the download.file() command to import the file from github into R to solve the first 5 questions of the Part 1 assessment. To read into R properly, we have formatted the imported data by setting 'header = TRUE', 'stringsAsFactors = FALSE', and 'row.names = 1'.
+## Part 1, Question 1. 
+Here, we are using the download.file() command to import a "tsv" file from github into R to solve first 5 questions of part 1 of the assessment. To read into R properly, we have formatted the imported data by setting 'header = TRUE', 'stringsAsFactors = FALSE', and 'row.names = 1'.
 ```{r,chunk1, echo=TRUE}
 # a link of the required datafile is downloaded from GitHub
 download.file("https://raw.githubusercontent.com/markziemann/SLE712_files/master/bioinfo_asst3_part1_files/gene_expression.tsv", destfile = "gene_expression.tsv")
@@ -154,7 +151,7 @@ library("Biostrings")
 #provided source
 source("https://raw.githubusercontent.com/markziemann/SLE712_files/master/bioinfo_asst3_part2_files/mutblast_functions.R")
 # provided source
-source("~/projects/SLE712_files/bioinfo_asst3_part2_files/mutblast_functions.R")
+source("https://raw.githubusercontent.com/markziemann/SLE712_files/master/bioinfo_asst3_part2_files/mutblast_functions.R")
 ```
 ### Importing the whole set of E. coli gene DNA sequences to find the number of sequences present in the E.coli set.
 here, we download the provided file, delete the fast file if any exists by unlinking, uncompress the file by gunziping and eventually create a blast database.
@@ -172,34 +169,36 @@ makeblastdb("Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa",dbtype
 
 ## Question 2. Download the sample fasta sequences to determine the length (in bp) and the proportion of GC bases of the allocated sequence. 
 In this part, after downloading the fasta file, we are reading the assigned sample sequence '33' into R. Then, checking the structure of the file with str() command to determine the length and the proportion of GC bases of the allocated sequence. 
-```{r, chunk14, echo=TRUE}
+```{r, chunk15, echo=TRUE}
 # importing the file with download.file()command
 if ( ! file.exists("sample.fa"))
 download.file("https://raw.githubusercontent.com/markziemann/SLE712_files/master/bioinfo_asst3_part2_files/sample.fa", destfile = "sample.fa")  
 # reading it in to R
-sample <- read.fasta("sample.fa")
+allocatedtask <- read.fasta("sample.fa")
+str(allocatedtask)
 # reading my sequence 
-myseq <- sample[[33]]
-myseq
+mytask <- allocatedtask[[33]]
+mytask
 # checking the data structure of the sequence
-str(myseq)
+str(mytask)
 # calculating the GC content with seqinr
-seqinr::GC(myseq)
+seqinr::GC(mytask)
 # calculating the length of the sequence (in bp) with seqinr
-seqinr::getLength(myseq)
+seqinr::getLength(mytask)
+# 0.5300092 GC content and the length of the sequence (in bp) is 1083
 ```
 ## Question 3. Using blast search to identify the E. coli gene that matches best with top 3 hits including percent identity, E-value and bit scores.
 Here, we sourced a function with library()command to run a blast search in order to find the best matches. 
-```{r, chunk15, echo=TRUE}
+```{r, chunk16, echo=TRUE}
 # the function is sourced to run a blast search
 library("Biostrings")
 source("https://raw.githubusercontent.com/markziemann/SLE712_files/master/bioinfo_asst3_part2_files/mutblast_functions.R")
-
-# provided source
-source("~/projects/SLE712_files/bioinfo_asst3_part2_files/mutblast_functions.R")
-
-
 # run blast search
+myblastn_tab
+res <- myblastn_tab(myseq = mytask, db = "Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa")
+
+
+
 myblastn_tab
 res <- myblastn_tab(myseq = mytask, db = "Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa")
 # check the BLAST results with command
@@ -212,8 +211,8 @@ str(res)
 ```
 
 ## Question 4. Run the mutation function to make a set number of point mutations to the sequence of interest and write an R code to check the number of mismatches between the original and mutated sequence. 
-In this segment, we use a mutation function with the mutator() command to note the point mutations to the sequence. By doing do so, we have created a mutated version of the original given sample sequence '33'. After running the mutator() command few times, we create a pairwise alignment of the mutated versions of the given sample sequence with the help of the library called 'Biostrings'.
-```{r, chunk16, echo=TRUE}
+In this segment, we use a mutation function with the mutator() command to note the point mutations to the sequence. By doing do so, we have created a mutated version of the original given sample sequence '33'. After running the mutator() command few times, we create a pairwise alignment of the mutated versions of the given sample sequence with the help of the library ("Biostrings").
+```{r, chunk17, echo=TRUE}
 # create a mutated version of the original given sample sequence '33' by 30
 mutator(myseq=mytask, 30)
 mytask_mut <- mutator(myseq=mytask, 30)
@@ -230,7 +229,7 @@ nmismatch(aln)
 ```
 ## Question 5. Using the provided functions for mutating and BLASTing a sequence, determine the number and proportion of sites.
 Here, We have to run the functions for mutating and BLASTing a sequence to find the number and proportion of sites that need to be altered to prevent the BLAST search from matching the gene of origin. In order to do so, we need to write the blast index first with the help of write.fasta() command and then, run the blast search with N numbers of mismatches by using the command called nrow(res) for each test.
-```{r, chunk17, echo=TRUE}
+```{r, chunk18, echo=TRUE}
 # answer, 5
 # first need to write the blast index
 write.fasta(mytask,names="mytask",file.out = "mytask.fa")
@@ -337,13 +336,41 @@ mytask_mut <- mutator(myseq=mytask,1000)
 res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
 res
 nrow(res)
-
-# test with 2000 mismatches
-mytask_mut <- mutator(myseq=mytask,2000)
-res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
-res
-nrow(res)
 ```
 
+
+``````{r, chunk19, echo=TRUE}
+
+########################
+routine <- function(myseq, nmut) {
+  mutseq <- mutator(myseq = mytask, nmut = nmut)
+  res <- myblastn_tab(myseq = mutseq, db="Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa")
+  if ( is.null(res) ) { myres=0 } else { myres=1 }
+  return(myres)
+}
+routine(myseq,100)
+replicate(50, routine(myseq,100) )
+
+
+routine(myseq,200)
+replicate(100, routine(myseq,200) )
+
+routine(myseq,150)
+replicate(100, routine(myseq,150) )
+
+routine(myseq,180)
+replicate(120, routine(myseq,180) )
+
+routine(myseq,190)
+replicate(130, routine(myseq,190) )
+
+routine(myseq,195)
+replicate(135, routine(myseq,195) )
+
+routine(myseq,185)
+replicate(125, routine(myseq,185) )
+
+
+```
 
 
