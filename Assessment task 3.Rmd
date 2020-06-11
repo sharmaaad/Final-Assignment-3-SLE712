@@ -226,9 +226,9 @@ pid(aln)
 nmismatch(aln)
 ```
 ## Question 5.
-Here, to find the number and proportion of sites that need to be altered to prevent the BLAST search from matching the gene of origin, we have to use functions for mutating and BLASTing the sequence . In order to do so, we need to write the blast index first with the help of write.fasta() command and then, run the blast search with N numbers of mismatches by using the command called nrow(res) for each test.
+Here, to find the number and proportion of sites that need to be altered to prevent the BLAST search from matching the gene of origin, we have to use functions for mutating and BLASTing the sequence. In order to do so, we need to write the blast index first with the help of write.fasta() command and then, run the blast search with N numbers of mismatches by using the command called nrow(res).
+
 ```{r, chunk18, echo=TRUE}
-# answer, 5
 # first need to write the blast index
 write.fasta(mytask,names="mytask",file.out = "mytask.fa")
 makeblastdb(file="mytask.fa",dbtype = "nucl")
@@ -263,14 +263,14 @@ res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
 res
 nrow(res)
 
-# test with 220 mismatches
-mytask_mut <- mutator(myseq=mytask,220)
+# test with 210 mismatches
+mytask_mut <- mutator(myseq=mytask,210)
 res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
 res
 nrow(res)
 
-# test with 210 mismatches
-mytask_mut <- mutator(myseq=mytask,210)
+# test with 220 mismatches
+mytask_mut <- mutator(myseq=mytask,220)
 res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
 res
 nrow(res)
@@ -338,26 +338,35 @@ nrow(res)
 
 
 ``````{r, chunk19, echo=TRUE}
-
-########################
+#created new fuction named 'routine'
 routine <- function(myseq, nmut) {
   mutseq <- mutator(myseq = mytask, nmut = nmut)
   res <- myblastn_tab(myseq = mutseq, db="Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa")
   if ( is.null(res) ) { myres=0 } else { myres=1 }
   return(myres)
 }
+
+routine(myseq,80)
+replicate(35, routine(myseq,80) )
+
 routine(myseq,100)
 replicate(50, routine(myseq,100) )
 
-
-routine(myseq,200)
-replicate(100, routine(myseq,200) )
+routine(myseq,140)
+replicate(80, routine(myseq,140) )
 
 routine(myseq,150)
 replicate(100, routine(myseq,150) )
 
+routine(myseq,170)
+replicate(110, routine(myseq,170) )
+
+
 routine(myseq,180)
 replicate(120, routine(myseq,180) )
+
+routine(myseq,185)
+replicate(125, routine(myseq,185) )
 
 routine(myseq,190)
 replicate(130, routine(myseq,190) )
@@ -365,10 +374,310 @@ replicate(130, routine(myseq,190) )
 routine(myseq,195)
 replicate(135, routine(myseq,195) )
 
-routine(myseq,185)
-replicate(125, routine(myseq,185) )
+routine(myseq,200)
+replicate(140, routine(myseq,200) )
 
 
+
+routine(myseq,220)
+replicate(145, routine(myseq,220) )
+
+routine(myseq,230)
+replicate(150, routine(myseq,230) )
+
+routine(myseq,240)
+replicate(150, routine(myseq,240) )
+
+routine(myseq,250)
+replicate(160, routine(myseq,250) )
+
+routine(myseq,260)
+replicate(165, routine(myseq,260) )
+
+
+routine(myseq,265)
+replicate(170, routine(myseq,265) )
+
+routine(myseq,270)
+replicate(175, routine(myseq,270) )
+
+routine(myseq,275)
+replicate(180, routine(myseq,275) )
+
+routine(myseq,280)
+replicate(185, routine(myseq,280) )
+
+routine(myseq,290)
+replicate(190, routine(myseq,290) )
+
+routine(myseq,295)
+replicate(195, routine(myseq,295) )
+
+
+routine(myseq,300)
+replicate(200, routine(myseq,300) )
+
+routine(myseq,310)
+replicate(210, routine(myseq,310) )
+
+routine(myseq,320)
+replicate(220, routine(myseq,320) )
+
+routine(myseq,330)
+replicate(230, routine(myseq,330) )
+
+routine(myseq,340)
+replicate(240, routine(myseq,340) )
+
+routine(myseq,350)
+replicate(250, routine(myseq,350) )
+
+routine(myseq,360)
+replicate(260, routine(myseq,360) )
+
+routine(myseq,370)
+replicate(265, routine(myseq,370) )
+
+routine(myseq,380)
+replicate(270, routine(myseq,380) )
+
+routine(myseq,390)
+replicate(280, routine(myseq,390) )
+
+routine(myseq,395)
+replicate(285, routine(myseq,395) )
+
+
+routine(myseq,400)
+replicate(290, routine(myseq,400) )
+
+routine(myseq,410)
+replicate(300, routine(myseq,410) )
+
+routine(myseq,420)
+replicate(310, routine(myseq,420) )
+
+routine(myseq,430)
+replicate(320, routine(myseq,430) )
+
+routine(myseq,440)
+replicate(330, routine(myseq,440) )
+
+routine(myseq,450)
+replicate(340, routine(myseq,450) )
+
+routine(myseq,460)
+replicate(350, routine(myseq,460) )
+
+routine(myseq,470)
+replicate(360, routine(myseq,470) )
+
+routine(myseq,480)
+replicate(370, routine(myseq,480) )
+
+routine(myseq,490)
+replicate(380, routine(myseq,490) )
+
+routine(myseq,495)
+replicate(385, routine(myseq,495) )
+
+
+routine(myseq,500)
+replicate(390, routine(myseq,500) )
+
+routine(myseq,510)
+replicate(400, routine(myseq,510) )
+
+routine(myseq,520)
+replicate(410, routine(myseq,520) )
+
+routine(myseq,530)
+replicate(420, routine(myseq,530) )
+
+routine(myseq,540)
+replicate(430, routine(myseq,540) )
+
+routine(myseq,550)
+replicate(440, routine(myseq,550) )
+
+routine(myseq,560)
+replicate(450, routine(myseq,560) )
+
+routine(myseq,570)
+replicate(460, routine(myseq,570) )
+
+routine(myseq,580)
+replicate(470, routine(myseq,580) )
+
+routine(myseq,590)
+replicate(480, routine(myseq,590) )
+
+routine(myseq,595)
+replicate(485, routine(myseq,595) )
+
+
+routine(myseq,600)
+replicate(490, routine(myseq,600) )
+
+routine(myseq,610)
+replicate(500, routine(myseq,610) )
+
+routine(myseq,620)
+replicate(510, routine(myseq,620) )
+
+routine(myseq,630)
+replicate(520, routine(myseq,630) )
+
+routine(myseq,640)
+replicate(530, routine(myseq,640) )
+
+routine(myseq,650)
+replicate(540, routine(myseq,650) )
+
+routine(myseq,660)
+replicate(550, routine(myseq,660) )
+
+routine(myseq,670)
+replicate(560, routine(myseq,670) )
+
+routine(myseq,680)
+replicate(570, routine(myseq,680) )
+
+routine(myseq,690)
+replicate(580, routine(myseq,690) )
+
+routine(myseq,695)
+replicate(585, routine(myseq,695) )
+
+
+routine(myseq,700)
+replicate(590, routine(myseq,700) )
+
+routine(myseq,710)
+replicate(600, routine(myseq,710) )
+
+routine(myseq,720)
+replicate(610, routine(myseq,720) )
+
+routine(myseq,730)
+replicate(620, routine(myseq,730) )
+
+routine(myseq,740)
+replicate(630, routine(myseq,740) )
+
+routine(myseq,750)
+replicate(640, routine(myseq,750) )
+
+routine(myseq,760)
+replicate(650, routine(myseq,760) )
+
+routine(myseq,770)
+replicate(660, routine(myseq,770) )
+
+routine(myseq,780)
+replicate(670, routine(myseq,780) )
+
+routine(myseq,790)
+replicate(680, routine(myseq,790) )
+
+routine(myseq,795)
+replicate(685, routine(myseq,795) )
+
+
+routine(myseq,800)
+replicate(690, routine(myseq,800) )
+
+routine(myseq,810)
+replicate(700, routine(myseq,810) )
+
+routine(myseq,820)
+replicate(710, routine(myseq,820) )
+
+routine(myseq,830)
+replicate(720, routine(myseq,830) )
+
+
+routine(myseq,835)
+replicate(725, routine(myseq,835) )
+
+routine(myseq,840)
+replicate(730, routine(myseq,840) )
+
+routine(myseq,850)
+replicate(740, routine(myseq,850) )
+
+routine(myseq,860)
+replicate(750, routine(myseq,860) )
+
+routine(myseq,870)
+replicate(760, routine(myseq,870) )
+
+routine(myseq,875)
+replicate(765, routine(myseq,875) )
+
+
+routine(myseq,880)
+replicate(770, routine(myseq,880) )
+
+routine(myseq,890)
+replicate(780, routine(myseq,890) )
+
+
+
+routine(myseq,900)
+replicate(790, routine(myseq,900) )
+
+routine(myseq,905)
+replicate(795, routine(myseq,905) )
+
+routine(myseq,910)
+replicate(800, routine(myseq,910) )
+
+routine(myseq,920)
+replicate(810, routine(myseq,920) )
+
+routine(myseq,930)
+replicate(820, routine(myseq,930) )
+
+routine(myseq,940)
+replicate(830, routine(myseq,940) )
+
+routine(myseq,950)
+replicate(840, routine(myseq,950) )
+
+routine(myseq,960)
+replicate(850, routine(myseq,960) )
+
+routine(myseq,970)
+replicate(860, routine(myseq,970) )
+
+routine(myseq,980)
+replicate(870, routine(myseq,980) )
+
+routine(myseq,990)
+replicate(880, routine(myseq,990) )
+
+routine(myseq,1000)
+replicate(890, routine(myseq,1000) )
 ```
+## question 6
+Here we created a line plot and table of data which dipict how the increase of proportion of mutated bases reduces the ability of BLAST to match the gene of origin. 
 
+# Based upon the findings of the chart and the table of the data, it can be said that out of 100 BLAST searches, after the 30ith search, the ability for BLAST to match with the gene of origin went to zero as we increased the proportion of the mutated bases. 
+``````{r, chunk20, echo=TRUE}
+# creating the line plot between nmut values as a vector (x) and the results of BLAST search as a vector(y)
+x<-c(35, 50, 80, 100, 110, 120, 125, 130, 135, 140, 145, 150, 150, 160, 165, 170, 175, 180, 185, 190, 195,
+     200, 210, 220, 230, 240, 250, 260, 265, 270, 280, 285, 290, 300, 310, 320, 330, 340, 350, 360, 370, 380, 385, 
+     390, 400, 410, 420, 430, 440, 450, 460, 470, 480, 485, 490,500, 510, 520, 530, 540, 550, 560, 570, 580, 585, 
+     590, 600, 610, 620, 630, 640, 650, 660, 670, 680, 685, 690, 700, 710, 720, 725, 730, 740, 750, 760, 765, 770, 
+     780, 790, 795, 800, 810, 820, 830, 840, 850, 860,870, 880, 890)
+x
+y<- c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0,
+      1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+plot(x,y, xlab="Number of sites randomised", ylab="Proportion of sucessfull BLAST",
+     main="How an increase in the number of sites randomised influnce the BLAST performance", 
+     type="l", pch="20", lwd="2", col="blue")
 
