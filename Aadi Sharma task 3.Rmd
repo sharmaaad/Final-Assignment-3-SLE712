@@ -152,7 +152,7 @@ library("Biostrings")
 source("https://raw.githubusercontent.com/markziemann/SLE712_files/master/bioinfo_asst3_part2_files/mutblast_functions.R")
 ```
 ### Importing the whole set of E. coli gene DNA sequences
-here, we download the provided file, delete the fast file if any exists by unlinking, uncompress the file by gunziping and eventually create a blast database.
+Here, we download the provided file, delete the fast file if any exists by unlinking, uncompress the file by gunziping and eventually create a blast database.
 ```{r, chunk13, echo=TRUE}
 # downloading the provided E. coli CDS file
 download.file("ftp://ftp.ensemblgenomes.org/pub/bacteria/release-42/fasta/bacteria_0_collection/escherichia_coli_str_k_12_substr_mg1655/cds/Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa.gz",
@@ -215,7 +215,7 @@ aln <- Biostrings::pairwiseAlignment(mytask_,mytask_mut2_)
 pid(aln)
 nmismatch(aln)
 ```
-## Question 5.
+## Question 5 and 6.
 Here, to find the number and proportion of sites that need to be altered to prevent the BLAST search from matching the gene of origin, we have to use functions for mutating and BLASTing the sequence. In order to do so, we need to write the blast index first with the help of write.fasta() command and then, run the blast search with N numbers of mismatches by using the command called nrow(res).
 ```{r, chunk17, echo=TRUE}
 # first need to write the blast index
@@ -307,4 +307,925 @@ res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
 res
 nrow(res)
 ```
+### Creating new function
+A new fuction named 'routine' to perform the routine of randomise with mutator(), blast with blastn_tab and summarise the results.
+```{r, chunk18, echo=TRUE}
+routine <- function(myseq, nmut) {
+  mutseq <- mutator(myseq = mytask, nmut = nmut)
+  res <- myblastn_tab(myseq = mutseq, db="Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa")
+  if ( is.null(res) ) { myres=0 } else { myres=1 }
+  return(myres)
+}
+```
+### Using replicate() command to repeat the function 'routine' 50 times in order get accurate data.
 
+```{r, chunk19, echo=TRUE}
+# 1.
+routine(myseq,10)
+replicate(50, routine(myseq,10) )
+# 2.
+routine(myseq,15)
+replicate(50, routine(myseq,15) )
+# 3.
+routine(myseq,20)
+replicate(50, routine(myseq,20) )
+# 4.
+routine(myseq,25)
+replicate(50, routine(myseq,25) )
+# 5.
+routine(myseq,30)
+replicate(50, routine(myseq,30) )
+# 6.
+routine(myseq,35)
+replicate(50, routine(myseq,35) )
+# 7.
+routine(myseq,40)
+replicate(50, routine(myseq,40) )
+# 8.
+routine(myseq,45)
+replicate(50, routine(myseq,45) )
+# 9.
+routine(myseq,50)
+replicate(50, routine(myseq,50) )
+# 10.
+routine(myseq,55)
+replicate(50, routine(myseq,55) )
+# 11.
+routine(myseq,60)
+replicate(50, routine(myseq,60) )
+# 12.
+routine(myseq,65)
+replicate(50, routine(myseq,65) )
+# 13.
+routine(myseq,70)
+replicate(50, routine(myseq,70) )
+# 14.
+routine(myseq,75)
+replicate(50, routine(myseq,75) )
+# 15.
+routine(myseq,80)
+replicate(50, routine(myseq,80) )
+# 16.
+routine(myseq,85)
+replicate(50, routine(myseq,85) )
+# 17.
+routine(myseq,90)
+replicate(50, routine(myseq,90) )
+# 18.
+routine(myseq,95)
+replicate(50, routine(myseq,95) )
+# 19.
+routine(myseq,100)
+replicate(50, routine(myseq,100) )
+# 20.
+routine(myseq,105)
+replicate(50, routine(myseq,105) )
+# 21.
+routine(myseq,110)
+replicate(50, routine(myseq,110) )
+# 22.
+routine(myseq,115)
+replicate(50, routine(myseq,115) )
+# 23.
+routine(myseq,120)
+replicate(50, routine(myseq,120) )
+# 24.
+routine(myseq,125)
+replicate(50, routine(myseq,125) )
+# 25.
+routine(myseq,130)
+replicate(50, routine(myseq,130) )
+# 26.
+routine(myseq,135)
+replicate(50, routine(myseq,135) )
+# 27.
+routine(myseq,140)
+replicate(50, routine(myseq,140) )
+# 28.
+routine(myseq,145)
+replicate(50, routine(myseq,145) )
+# 29.
+routine(myseq,150)
+replicate(50, routine(myseq,150) )
+# 30.
+routine(myseq,155)
+replicate(50, routine(myseq,155) )
+# 31.
+routine(myseq,160)
+replicate(50, routine(myseq,160) )
+# 32.
+routine(myseq,165)
+replicate(50, routine(myseq,165) )
+# 33.
+routine(myseq,170)
+replicate(50, routine(myseq,170) )
+# 34.
+routine(myseq,175)
+replicate(50, routine(myseq,175) )
+# 35.
+routine(myseq,180)
+replicate(50, routine(myseq,180) )
+# 36.
+routine(myseq,185)
+replicate(50, routine(myseq,185) )
+# 37.
+routine(myseq,190)
+replicate(50, routine(myseq,190) )
+# 38.
+routine(myseq,195)
+replicate(50, routine(myseq,195) )
+# 39.
+routine(myseq,200)
+replicate(50, routine(myseq,200) )
+# 40.
+routine(myseq,210)
+replicate(50, routine(myseq,210) )
+# 41.
+routine(myseq,220)
+replicate(50, routine(myseq,220) )
+# 42.
+routine(myseq,230)
+replicate(50, routine(myseq,230) )
+# 43.
+routine(myseq,240)
+replicate(50, routine(myseq,240) )
+# 44.
+routine(myseq,250)
+replicate(50, routine(myseq,250) )
+# 45.
+routine(myseq,260)
+replicate(50, routine(myseq,260) )
+# 46.
+routine(myseq,270)
+replicate(50, routine(myseq,270) )
+# 47.
+routine(myseq,280)
+replicate(50, routine(myseq,280) )
+# 48.
+routine(myseq,290)
+replicate(50, routine(myseq,290) )
+# 49.
+routine(myseq, 300)
+replicate(50, routine(myseq,300) )
+# 50.
+routine(myseq,310)
+replicate(50, routine(myseq,310) )
+# 51.
+routine(myseq,320)
+replicate(50, routine(myseq,320) )
+# 52.
+routine(myseq,330)
+replicate(50, routine(myseq,330) )
+# 53.
+routine(myseq,340)
+replicate(50, routine(myseq,340) )
+# 54.
+routine(myseq,350)
+replicate(50, routine(myseq,350) )
+# 55.
+routine(myseq,360)
+replicate(50, routine(myseq,360) )
+# 56.
+routine(myseq,370)
+replicate(50, routine(myseq,370) )
+# 57.
+routine(myseq,380)
+replicate(50, routine(myseq,380) )
+# 58.
+routine(myseq,390)
+replicate(50, routine(myseq,390) )
+# 59.
+routine(myseq,400)
+replicate(50, routine(myseq,400) )
+# 60.
+routine(myseq,410)
+replicate(50, routine(myseq,410) )
+# 61.
+routine(myseq,420)
+replicate(50, routine(myseq,420) )
+# 62.
+routine(myseq,430)
+replicate(50, routine(myseq,430) )
+# 63.
+routine(myseq,440)
+replicate(50, routine(myseq,440) )
+# 64.
+routine(myseq,450)
+replicate(50, routine(myseq,450) )
+# 65.
+routine(myseq,460)
+replicate(50, routine(myseq,460) )
+# 66.
+routine(myseq,470)
+replicate(50, routine(myseq,470) )
+# 67.
+routine(myseq,480)
+replicate(50, routine(myseq,480) )
+# 68.
+routine(myseq,490)
+replicate(50, routine(myseq,490) )
+# 69.
+routine(myseq,500)
+replicate(50, routine(myseq,500) )
+# 70.
+routine(myseq,510)
+replicate(50, routine(myseq,510) )
+# 71.
+routine(myseq,520)
+replicate(50, routine(myseq,520) )
+# 72.
+routine(myseq,530)
+replicate(50, routine(myseq,530) )
+# 73.
+routine(myseq,540)
+replicate(50, routine(myseq,540) )
+# 74.
+routine(myseq,550)
+replicate(50, routine(myseq,550) )
+# 75.
+routine(myseq,560)
+replicate(50, routine(myseq,560) )
+# 76.
+routine(myseq,570)
+replicate(50, routine(myseq,570) )
+# 77.
+routine(myseq,580)
+replicate(50, routine(myseq,580) )
+# 78.
+routine(myseq,590)
+replicate(50, routine(myseq,590) )
+# 79.
+routine(myseq,600)
+replicate(50, routine(myseq,600) )
+# 80.
+routine(myseq,610)
+replicate(50, routine(myseq,610) )
+# 81.
+routine(myseq,620)
+replicate(50, routine(myseq,620) )
+# 82.
+routine(myseq,630)
+replicate(50, routine(myseq,630) )
+# 83.
+routine(myseq,640)
+replicate(50, routine(myseq,640) )
+# 84.
+routine(myseq,650)
+replicate(50, routine(myseq,650) )
+# 85.
+routine(myseq,660)
+replicate(50, routine(myseq,660) )
+# 86.
+routine(myseq,670)
+replicate(50, routine(myseq,670) )
+# 87.
+routine(myseq,680)
+replicate(50, routine(myseq,680) )
+# 88.
+routine(myseq,690)
+replicate(50, routine(myseq,690) )
+# 89.
+routine(myseq,700)
+replicate(50, routine(myseq,700) )
+# 90.
+routine(myseq,710)
+replicate(50, routine(myseq,710) )
+# 91.
+routine(myseq,720)
+replicate(50, routine(myseq,720) )
+# 92.
+routine(myseq,730)
+replicate(50, routine(myseq,730) )
+# 93.
+routine(myseq,740)
+replicate(50, routine(myseq,740) )
+# 94.
+routine(myseq,750)
+replicate(50, routine(myseq,750) )
+# 95.
+routine(myseq,760)
+replicate(50, routine(myseq,760) )
+# 96.
+routine(myseq,770)
+replicate(50, routine(myseq,770) )
+# 97.
+routine(myseq,780)
+replicate(50, routine(myseq,780) )
+# 98.
+routine(myseq,790)
+replicate(50, routine(myseq,790) )
+# 99.
+routine(myseq,800)
+replicate(50, routine(myseq,800) )
+# 100.
+routine(myseq,810)
+replicate(50, routine(myseq,810) )
+```
+### Using replicate() command to repeat the function 'routine' 100 times in order get accurate data.
+```{r, chunk20, echo=TRUE}
+# 1.
+routine(myseq,10)
+replicate(100, routine(myseq,10) )
+# 2.
+routine(myseq,15)
+replicate(100, routine(myseq,15) )
+# 3.
+routine(myseq,20)
+replicate(100, routine(myseq,20) )
+# 4.
+routine(myseq,25)
+replicate(100, routine(myseq,25) )
+# 5.
+routine(myseq,30)
+replicate(100, routine(myseq,30) )
+# 6.
+routine(myseq,35)
+replicate(100, routine(myseq,35) )
+# 7.
+routine(myseq,40)
+replicate(100, routine(myseq,40) )
+# 8.
+routine(myseq,45)
+replicate(100, routine(myseq,45) )
+# 9.
+routine(myseq,50)
+replicate(100, routine(myseq,50) )
+# 10.
+routine(myseq,55)
+replicate(100, routine(myseq,55) )
+# 11.
+routine(myseq,60)
+replicate(100, routine(myseq,60) )
+# 12.
+routine(myseq,65)
+replicate(100, routine(myseq,65) )
+# 13.
+routine(myseq,70)
+replicate(100, routine(myseq,70) )
+# 14.
+routine(myseq,75)
+replicate(100, routine(myseq,75) )
+# 15.
+routine(myseq,80)
+replicate(100, routine(myseq,80) )
+# 16.
+routine(myseq,85)
+replicate(100, routine(myseq,85) )
+# 17.
+routine(myseq,90)
+replicate(100, routine(myseq,90) )
+# 18.
+routine(myseq,95)
+replicate(100, routine(myseq,95) )
+# 19.
+routine(myseq,100)
+replicate(100, routine(myseq,100) )
+# 20.
+routine(myseq,105)
+replicate(100, routine(myseq,105) )
+# 21.
+routine(myseq,110)
+replicate(100, routine(myseq,110) )
+# 22.
+routine(myseq,115)
+replicate(100, routine(myseq,115) )
+# 23.
+routine(myseq,120)
+replicate(100, routine(myseq,120) )
+# 24.
+routine(myseq,125)
+replicate(100, routine(myseq,125) )
+# 25.
+routine(myseq,130)
+replicate(100, routine(myseq,130) )
+# 26.
+routine(myseq,135)
+replicate(100, routine(myseq,135) )
+# 27.
+routine(myseq,140)
+replicate(100, routine(myseq,140) )
+# 28.
+routine(myseq,145)
+replicate(100, routine(myseq,145) )
+# 29.
+routine(myseq,150)
+replicate(100, routine(myseq,150) )
+# 30.
+routine(myseq,155)
+replicate(100, routine(myseq,155) )
+# 31.
+routine(myseq,160)
+replicate(100, routine(myseq,160) )
+# 32.
+routine(myseq,165)
+replicate(100, routine(myseq,165) )
+# 33.
+routine(myseq,170)
+replicate(100, routine(myseq,170) )
+# 34.
+routine(myseq,175)
+replicate(100, routine(myseq,175) )
+# 35.
+routine(myseq,180)
+replicate(100, routine(myseq,180) )
+# 36.
+routine(myseq,185)
+replicate(100, routine(myseq,185) )
+# 37.
+routine(myseq,190)
+replicate(100, routine(myseq,190) )
+# 38.
+routine(myseq,195)
+replicate(100, routine(myseq,195) )
+# 39.
+routine(myseq,200)
+replicate(100, routine(myseq,200) )
+# 40.
+routine(myseq,210)
+replicate(100, routine(myseq,210) )
+# 41.
+routine(myseq,220)
+replicate(100, routine(myseq,220) )
+# 42.
+routine(myseq,230)
+replicate(100, routine(myseq,230) )
+# 43.
+routine(myseq,240)
+replicate(100, routine(myseq,240) )
+# 44.
+routine(myseq,250)
+replicate(100, routine(myseq,250) )
+# 45.
+routine(myseq,260)
+replicate(100, routine(myseq,260) )
+# 46.
+routine(myseq,270)
+replicate(100, routine(myseq,270) )
+# 47.
+routine(myseq,280)
+replicate(100, routine(myseq,280) )
+# 48.
+routine(myseq,290)
+replicate(100, routine(myseq,290) )
+# 49.
+routine(myseq, 300)
+replicate(100, routine(myseq,300) )
+# 50.
+routine(myseq,310)
+replicate(100, routine(myseq,310) )
+# 51.
+routine(myseq,320)
+replicate(100, routine(myseq,320) )
+# 52.
+routine(myseq,330)
+replicate(100, routine(myseq,330) )
+# 53.
+routine(myseq,340)
+replicate(100, routine(myseq,340) )
+# 54.
+routine(myseq,350)
+replicate(100, routine(myseq,350) )
+# 55.
+routine(myseq,360)
+replicate(100, routine(myseq,360) )
+# 56.
+routine(myseq,370)
+replicate(100, routine(myseq,370) )
+# 57.
+routine(myseq,380)
+replicate(100, routine(myseq,380) )
+# 58.
+routine(myseq,390)
+replicate(100, routine(myseq,390) )
+# 59.
+routine(myseq,400)
+replicate(100, routine(myseq,400) )
+# 60.
+routine(myseq,410)
+replicate(100, routine(myseq,410) )
+# 61.
+routine(myseq,420)
+replicate(100, routine(myseq,420) )
+# 62.
+routine(myseq,430)
+replicate(100, routine(myseq,430) )
+# 63.
+routine(myseq,440)
+replicate(100, routine(myseq,440) )
+# 64.
+routine(myseq,450)
+replicate(100, routine(myseq,450) )
+# 65.
+routine(myseq,460)
+replicate(100, routine(myseq,460) )
+# 66.
+routine(myseq,470)
+replicate(100, routine(myseq,470) )
+# 67.
+routine(myseq,480)
+replicate(100, routine(myseq,480) )
+# 68.
+routine(myseq,490)
+replicate(100, routine(myseq,490) )
+# 69.
+routine(myseq,500)
+replicate(100, routine(myseq,500) )
+# 70.
+routine(myseq,510)
+replicate(100, routine(myseq,510) )
+# 71.
+routine(myseq,520)
+replicate(100, routine(myseq,520) )
+# 72.
+routine(myseq,530)
+replicate(100, routine(myseq,530) )
+# 73.
+routine(myseq,540)
+replicate(100, routine(myseq,540) )
+# 74.
+routine(myseq,550)
+replicate(100, routine(myseq,550) )
+# 75.
+routine(myseq,560)
+replicate(100, routine(myseq,560) )
+# 76.
+routine(myseq,570)
+replicate(100, routine(myseq,570) )
+# 77.
+routine(myseq,580)
+replicate(100, routine(myseq,580) )
+# 78.
+routine(myseq,590)
+replicate(100, routine(myseq,590) )
+# 79.
+routine(myseq,600)
+replicate(100, routine(myseq,600) )
+# 80.
+routine(myseq,610)
+replicate(100, routine(myseq,610) )
+# 81.
+routine(myseq,620)
+replicate(100, routine(myseq,620) )
+# 82.
+routine(myseq,630)
+replicate(100, routine(myseq,630) )
+# 83.
+routine(myseq,640)
+replicate(100, routine(myseq,640) )
+# 84.
+routine(myseq,650)
+replicate(100, routine(myseq,650) )
+# 85.
+routine(myseq,660)
+replicate(100, routine(myseq,660) )
+# 86.
+routine(myseq,670)
+replicate(100, routine(myseq,670) )
+# 87.
+routine(myseq,680)
+replicate(100, routine(myseq,680) )
+# 88.
+routine(myseq,690)
+replicate(100, routine(myseq,690) )
+# 89.
+routine(myseq,700)
+replicate(100, routine(myseq,700) )
+# 90.
+routine(myseq,710)
+replicate(100, routine(myseq,710) )
+# 91.
+routine(myseq,720)
+replicate(100, routine(myseq,720) )
+# 92.
+routine(myseq,730)
+replicate(100, routine(myseq,730) )
+# 93.
+routine(myseq,740)
+replicate(100, routine(myseq,740) )
+# 94.
+routine(myseq,750)
+replicate(100, routine(myseq,750) )
+# 95.
+routine(myseq,760)
+replicate(100, routine(myseq,760) )
+# 96.
+routine(myseq,770)
+replicate(100, routine(myseq,770) )
+# 97.
+routine(myseq,780)
+replicate(100, routine(myseq,780) )
+# 98.
+routine(myseq,790)
+replicate(100, routine(myseq,790) )
+# 99.
+routine(myseq,800)
+replicate(100, routine(myseq,800) )
+# 100.
+routine(myseq,810)
+replicate(100, routine(myseq,810) )
+```
+### Using replicate() command to repeat the function 'routine' 150 times in order get accurate data.
+
+```{r, chunk21, echo=TRUE}
+
+# 1.
+routine(myseq,10)
+replicate(150, routine(myseq,10) )
+# 2.
+routine(myseq,15)
+replicate(150, routine(myseq,15) )
+# 3.
+routine(myseq,20)
+replicate(150, routine(myseq,20) )
+# 4.
+routine(myseq,25)
+replicate(150, routine(myseq,25) )
+# 5.
+routine(myseq,30)
+replicate(150, routine(myseq,30) )
+# 6.
+routine(myseq,35)
+replicate(150, routine(myseq,35) )
+# 7.
+routine(myseq,40)
+replicate(150, routine(myseq,40) )
+# 8.
+routine(myseq,45)
+replicate(150, routine(myseq,45) )
+# 9.
+routine(myseq,50)
+replicate(150, routine(myseq,50) )
+# 10.
+routine(myseq,55)
+replicate(150, routine(myseq,55) )
+# 11.
+routine(myseq,60)
+replicate(150, routine(myseq,60) )
+# 12.
+routine(myseq,65)
+replicate(150, routine(myseq,65) )
+# 13.
+routine(myseq,70)
+replicate(150, routine(myseq,70) )
+# 14.
+routine(myseq,75)
+replicate(150, routine(myseq,75) )
+# 15.
+routine(myseq,80)
+replicate(150, routine(myseq,80) )
+# 16.
+routine(myseq,85)
+replicate(150, routine(myseq,85) )
+# 17.
+routine(myseq,90)
+replicate(150, routine(myseq,90) )
+# 18.
+routine(myseq,95)
+replicate(150, routine(myseq,95) )
+# 19.
+routine(myseq,100)
+replicate(150, routine(myseq,100) )
+# 20.
+routine(myseq,105)
+replicate(150, routine(myseq,105) )
+# 21.
+routine(myseq,110)
+replicate(150, routine(myseq,110) )
+# 22.
+routine(myseq,115)
+replicate(150, routine(myseq,115) )
+# 23.
+routine(myseq,120)
+replicate(150, routine(myseq,120) )
+# 24.
+routine(myseq,125)
+replicate(150, routine(myseq,125) )
+# 25.
+routine(myseq,130)
+replicate(150, routine(myseq,130) )
+# 26.
+routine(myseq,135)
+replicate(150, routine(myseq,135) )
+# 27.
+routine(myseq,140)
+replicate(150, routine(myseq,140) )
+# 28.
+routine(myseq,145)
+replicate(150, routine(myseq,145) )
+# 29.
+routine(myseq,150)
+replicate(150, routine(myseq,150) )
+# 30.
+routine(myseq,155)
+replicate(150, routine(myseq,155) )
+# 31.
+routine(myseq,160)
+replicate(150, routine(myseq,160) )
+# 32.
+routine(myseq,165)
+replicate(150, routine(myseq,165) )
+# 33.
+routine(myseq,170)
+replicate(150, routine(myseq,170) )
+# 34.
+routine(myseq,175)
+replicate(150, routine(myseq,175) )
+# 35.
+routine(myseq,180)
+replicate(150, routine(myseq,180) )
+# 36.
+routine(myseq,185)
+replicate(150, routine(myseq,185) )
+# 37.
+routine(myseq,190)
+replicate(150, routine(myseq,190) )
+# 38.
+routine(myseq,195)
+replicate(150, routine(myseq,195) )
+# 39.
+routine(myseq,200)
+replicate(150, routine(myseq,200) )
+# 40.
+routine(myseq,210)
+replicate(150, routine(myseq,210) )
+# 41.
+routine(myseq,220)
+replicate(150, routine(myseq,220) )
+# 42.
+routine(myseq,230)
+replicate(150, routine(myseq,230) )
+# 43.
+routine(myseq,240)
+replicate(150, routine(myseq,240) )
+# 44.
+routine(myseq,250)
+replicate(150, routine(myseq,250) )
+# 45.
+routine(myseq,260)
+replicate(150, routine(myseq,260) )
+# 46.
+routine(myseq,270)
+replicate(150, routine(myseq,270) )
+# 47.
+routine(myseq,280)
+replicate(150, routine(myseq,280) )
+# 48.
+routine(myseq,290)
+replicate(150, routine(myseq,290) )
+# 49.
+routine(myseq, 300)
+replicate(150, routine(myseq,300) )
+# 50.
+routine(myseq,310)
+replicate(150, routine(myseq,310) )
+# 51.
+routine(myseq,320)
+replicate(150, routine(myseq,320) )
+# 52.
+routine(myseq,330)
+replicate(150, routine(myseq,330) )
+# 53.
+routine(myseq,340)
+replicate(150, routine(myseq,340) )
+# 54.
+routine(myseq,350)
+replicate(150, routine(myseq,350) )
+# 55.
+routine(myseq,360)
+replicate(150, routine(myseq,360) )
+# 56.
+routine(myseq,370)
+replicate(150, routine(myseq,370) )
+# 57.
+routine(myseq,380)
+replicate(150, routine(myseq,380) )
+# 58.
+routine(myseq,390)
+replicate(150, routine(myseq,390) )
+# 59.
+routine(myseq,400)
+replicate(150, routine(myseq,400) )
+# 60.
+routine(myseq,410)
+replicate(150, routine(myseq,410) )
+# 61.
+routine(myseq,420)
+replicate(150, routine(myseq,420) )
+# 62.
+routine(myseq,430)
+replicate(150, routine(myseq,430) )
+# 63.
+routine(myseq,440)
+replicate(150, routine(myseq,440) )
+# 64.
+routine(myseq,450)
+replicate(150, routine(myseq,450) )
+# 65.
+routine(myseq,460)
+replicate(150, routine(myseq,460) )
+# 66.
+routine(myseq,470)
+replicate(150, routine(myseq,470) )
+# 67.
+routine(myseq,480)
+replicate(150, routine(myseq,480) )
+# 68.
+routine(myseq,490)
+replicate(150, routine(myseq,490) )
+# 69.
+routine(myseq,500)
+replicate(150, routine(myseq,500) )
+# 70.
+routine(myseq,510)
+replicate(150, routine(myseq,510) )
+# 71.
+routine(myseq,520)
+replicate(150, routine(myseq,520) )
+# 72.
+routine(myseq,530)
+replicate(150, routine(myseq,530) )
+# 73.
+routine(myseq,540)
+replicate(150, routine(myseq,540) )
+# 74.
+routine(myseq,550)
+replicate(150, routine(myseq,550) )
+# 75.
+routine(myseq,560)
+replicate(150, routine(myseq,560) )
+# 76.
+routine(myseq,570)
+replicate(150, routine(myseq,570) )
+# 77.
+routine(myseq,580)
+replicate(150, routine(myseq,580) )
+# 78.
+routine(myseq,590)
+replicate(150, routine(myseq,590) )
+# 79.
+routine(myseq,600)
+replicate(150, routine(myseq,600) )
+# 80.
+routine(myseq,610)
+replicate(150, routine(myseq,610) )
+# 81.
+routine(myseq,620)
+replicate(150, routine(myseq,620) )
+# 82.
+routine(myseq,630)
+replicate(150, routine(myseq,630) )
+# 83.
+routine(myseq,640)
+replicate(150, routine(myseq,640) )
+# 84.
+routine(myseq,650)
+replicate(150, routine(myseq,650) )
+# 85.
+routine(myseq,660)
+replicate(150, routine(myseq,660) )
+# 86.
+routine(myseq,670)
+replicate(150, routine(myseq,670) )
+# 87.
+routine(myseq,680)
+replicate(150, routine(myseq,680) )
+# 88.
+routine(myseq,690)
+replicate(150, routine(myseq,690) )
+# 89.
+routine(myseq,700)
+replicate(150, routine(myseq,700) )
+# 90.
+routine(myseq,710)
+replicate(150, routine(myseq,710) )
+# 91.
+routine(myseq,720)
+replicate(150, routine(myseq,720) )
+# 92.
+routine(myseq,730)
+replicate(150, routine(myseq,730) )
+# 93.
+routine(myseq,740)
+replicate(150, routine(myseq,740) )
+# 94.
+routine(myseq,750)
+replicate(150, routine(myseq,750) )
+# 95.
+routine(myseq,760)
+replicate(150, routine(myseq,760) )
+# 96.
+routine(myseq,770)
+replicate(150, routine(myseq,770) )
+# 97.
+routine(myseq,780)
+replicate(150, routine(myseq,780) )
+# 98.
+routine(myseq,790)
+replicate(150, routine(myseq,790) )
+# 99.
+routine(myseq,800)
+replicate(150, routine(myseq,800) )
+# 100.
+routine(myseq,810)
+replicate(150, routine(myseq,810) )
+```
