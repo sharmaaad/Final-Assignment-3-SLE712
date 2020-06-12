@@ -1,1 +1,310 @@
-klkllmlml
+```
+Title:  "Assessment task 3.Rmd Report, SLE712"
+Source: https://github.com/sharmaaad/Final-Assignment-3-SLE712.git
+Author: "Aadi Sharma, student ID - 220167207”
+Output type: html_document
+Theme: cosmo
+```
+## Part 1, Question 1. 
+Here, we are using the download.file() command to import a "tsv" file from github into R to solve first 5 questions of part 1 of the assessment. To read into R properly, we have formatted the imported data by setting 'header = TRUE', 'stringsAsFactors = FALSE', and 'row.names = 1'.
+```{r,chunk1, echo=TRUE}
+# downloading the link
+download.file("https://raw.githubusercontent.com/markziemann/SLE712_files/master/bioinfo_asst3_part1_files/gene_expression.tsv", destfile = "gene_expression.tsv")
+# reading the data frame in to RStudio
+# recognising the header 
+# using the first column as the rownames
+# avoiding strings to be recognised as Factors
+x <-read.table("gene_expression.tsv", header = TRUE, stringsAsFactors = FALSE, row.names = 1)
+``` 
+### Checking the data integrity
+In this section, we are using head()command to read first six lines of the data frame and using str() to make sure that data is recognised as numeric.
+```{r, chunk2, echo=TRUE}
+# checking the first six lines of the data frame
+head(x)
+# checking the structure of the data
+str(x)
+```
+## Question 2.
+In this part, we are using subset command to make a new column which will be mean of the other columns.
+
+```{r, chunk3, echo=TRUE}
+# x is the dataframe
+# new column is named 'mean2' to calculate the mean
+x$mean2 <- rowMeans(x)
+# checking the first six lines of the data
+head(x)
+```
+## Question 3. 
+In order to find 10 genes with the highest mean expression, we command the re-ordering of the column named 'mean2'.
+
+```{r, chunk4, echo=TRUE}
+# initially, order the column named 'mean2'
+order(x$mean2)
+# then, by using square brackets, we re-order the column
+x[order(-x$mean2),]
+x_sorted <- x[order(-x$mean2),]
+# in the end, used head() command to find out 10 genes with the highest mean expression
+head(x_sorted,10)
+```
+## Question 4.
+In this section, we are filtering the column named 'mean2' to calculate a mean <10. 
+
+```{r, chunk5, echo=TRUE}
+# using filter function
+filtered <- subset(x, mean2 > 10)
+# filtering the number of rows
+nrow(filtered)
+```
+## Question 5.
+In this segment, we use the hist() function to make a histogram plot of the mean values of the column named 'mean2' of the provided data. the png form of histogram plot is saved in the repository on github.
+```{r, chunk6, echo=TRUE}
+# using the hist() command on the column named 'mean2' of the data 'x'
+hist(x$mean2)
+# to distribute the data frame properly, dividing it by breaks of 30
+hist(x$mean2,breaks=30)
+```
+## Question 6.
+Here, we are using the download.file() command to download another "cvs file" from github into R to solve the last 5 questions of part 1 of the assessment. To read into R properly, with read.csv() command, we have formatted the imported data by setting 'header = TRUE', 'stringsAsFactors = FALSE', and 'row.names = 1'.
+```{r, chunk7, echo=TRUE}
+# a link of another data frame is downloaded from GitHub
+download.file("https://raw.githubusercontent.com/markziemann/SLE712_files/master/bioinfo_asst3_part1_files/growth_data.csv", destfile = "growth_data.csv")
+# in order to import "comma separated" values of the data file correctly, we use read.csv() command
+y<-read.csv("growth_data.csv")
+# reading the data frame into R
+# recognising the header
+# avoiding strings to be recognised as Factors
+y <-read.csv("growth_data.csv", header = TRUE, stringsAsFactors = FALSE)
+```
+### Checking the data integrity
+In this section, we are using str() command to make sure that data is recognised as numeric and we are also naming the columns by using the subset function. 
+
+```{r, chunk8, echo=TRUE}
+# checking the structure of the data
+str(y)
+# to name the columns we are use the subset()command as the data values are 'characters'
+subset(y,Site=="northeast")
+colnames(y)
+```
+## Question 7.
+Here, we are using subset() command to find out the mean and standard deviation of tree circumference of two different sites which are 'northeast' and 'southwest' from 2004 to 2019.
+
+```{r, chunk9, echo=TRUE}
+# subsetting of the tree circumference at the start and end of the study at 'northeast site'
+ne<-subset(y, Site == "northeast")
+# checking the first six lines of the data frame with head()command
+head(ne)
+# checking the structure of the data with str()command
+str(ne)
+# calculating the mean of tree circumference of 'northeast site' from 2004 to 2019
+mean(ne$Circumf_2004_cm)
+mean(ne$Circumf_2019_cm)
+# calculating standard deviation of tree circumference of 'northeast site' from 2004 to 2019
+sd(ne$Circumf_2004_cm)
+sd(ne$Circumf_2019_cm)
+
+# subsetting of the tree circumference at the start and end of the study at 'southwest site'
+sw<-subset(y, Site == "southwest")
+# checking the first six lines of the data frame with head()command
+head(sw)
+# checking the structure of the data with str()command
+str(sw)
+# the mean of tree circumference of 'southwest site' from 2004 to 2019
+mean(sw$Circumf_2004_cm)
+mean(sw$Circumf_2019_cm)
+# the standard deviation of tree circumference of 'southwest site' from 2004 to 2019
+sd(sw$Circumf_2004_cm)
+sd(sw$Circumf_2019_cm)
+```
+## Question 8.
+In this part of the assessment task, we are creating a box plot of tree circumference of northeast and southwest sites from 2004 to 2019 by using boxplot() command.
+```{r, chunk10, echo=TRUE}
+# creating a boxplot of tree circumference of northeast and southwest sites from 2004 to 2019
+boxplot(ne$Circumf_2004_cm, ne$Circumf_2019_cm, sw$Circumf_2004_cm, sw$Circumf_2019_cm, names = c("ne2004", "ne2019", "sw2004", "sw2019"), ylab="circumference (m)", las=2, main= "Tree growth at two plantation sites")
+```
+## Question 9.
+Here we are subtracting the tree circumferences from year 2019 to year 2004 (over the past 10 yrars)for both northeast and southwest sites.
+```{r, chunk11, echo=TRUE}
+# calculating the growth difference by using subtraction command 
+ne$growth <-ne$Circumf_2019 - ne$Circumf_2004_cm
+# using head () commnad
+head(ne)
+# using head () commnad
+sw$growth <-sw$Circumf_2019 - sw$Circumf_2004_cm
+head(sw)
+```
+## Question 10.
+In this section, we are applying the the t.test and wilcox.test functions to estimate the p-value.
+```{r, chunk12, echo=TRUE}
+# using t.test
+t.test(sw$growth, ne$growth)
+# using wilcox.test
+wilcox.test(sw$growth, ne$growth)
+```
+## Part 2, Question 1. 
+In this part, we download the prerequisite libraries and sources which will be used in R to get the code working. we need seqinr pacakge for processing and analysing the sequence data, R.utils for extracting compressed files and rBLAST for BLAST searches.
+```{r, lib}
+# downloding the libraries
+library("seqinr")
+library("R.utils")
+library("rBLAST")
+library("Biostrings")
+# provided source
+source("https://raw.githubusercontent.com/markziemann/SLE712_files/master/bioinfo_asst3_part2_files/mutblast_functions.R")
+```
+### Importing the whole set of E. coli gene DNA sequences
+here, we download the provided file, delete the fast file if any exists by unlinking, uncompress the file by gunziping and eventually create a blast database.
+```{r, chunk13, echo=TRUE}
+# downloading the provided E. coli CDS file
+download.file("ftp://ftp.ensemblgenomes.org/pub/bacteria/release-42/fasta/bacteria_0_collection/escherichia_coli_str_k_12_substr_mg1655/cds/Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa.gz",
+destfile = "Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa.gz")
+# deleting the fasta file if already exists
+unlink("Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa") 
+# uncompressing the file
+R.utils::gunzip("Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa.gz", overwrite= TRUE)
+# creating the blast DB to find out number of sequences present in the E.coli set
+makeblastdb("Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa",dbtype = "nucl","-parse_seqids")
+``` 
+## Question 2. Download the sample fasta sequences to determine the length (in bp) and the proportion of GC bases of the allocated sequence. 
+In this part, after downloading the fasta file, we are reading the assigned sample sequence '33' into R. Then, checking the structure of the file with str() command to determine the length and the proportion of GC bases of the allocated sequence. 
+```{r, chunk14, echo=TRUE}
+# importing the file with download.file()command
+if ( ! file.exists("sample.fa"))
+download.file("https://raw.githubusercontent.com/markziemann/SLE712_files/master/bioinfo_asst3_part2_files/sample.fa", destfile = "sample.fa")  
+# reading it in to R
+allocatedtask <- read.fasta("sample.fa")
+str(allocatedtask)
+# reading my sequence 
+mytask <- allocatedtask[[33]]
+mytask
+# checking the data structure of the sequence
+str(mytask)
+# calculating the GC content with seqinr
+seqinr::GC(mytask)
+# calculating the length of the sequence (in bp) with seqinr
+seqinr::getLength(mytask)
+# 0.5300092 GC content and the length of the sequence (in bp) is 1083
+```
+## Question 3.
+Here, we sourced the R functions to create BLAST databases and perform BLAST searches. BLAST will be used to identify what E.Coli gene the given sequence matches best in a table of the top 3 hits including percent identity, E-value and bit scores
+```{r, chunk15, echo=TRUE}
+# here, we are BLAST searching the given sample sequence '33' with the whole set of E. coli genes
+myblastn_tab
+res <- myblastn_tab(myseq = mytask, db = "Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa")
+# checking the BLAST results with the first six lines of the data frame by using head()commmand
+head(res)
+# checking the structure of the data to confirm the presence of numerical and integers data structure
+str(res)
+
+# As a result 'AAC74295' accesion number is found as a top hit which belongs to 'prfA gene'.
+```
+## Question 4. 
+In this segment, we are using a mutation function with the mutator() command to note the point mutations in the given sample sequence '33'. By doing so, we will be able to create mutated copies of the sequence. After running the mutator() command few times, we will create a pairwise alignment of the mutated versions of the given sample sequence with the help of the library ("Biostrings").
+```{r, chunk16, echo=TRUE}
+# creating a mutated version with 30 substitutions
+mutator(myseq=mytask, 30)
+mytask_mut <- mutator(myseq=mytask, 30)
+mytask_mut
+# created a mutated version with 100 substitutions
+mutator(myseq=mytask, 100)
+mytask_mut2 <- mutator(mytask_mut, 100)
+mytask_mut2
+# now created a pairwise alignment of mutated version and original sample sequence '33' to find number of mismatches
+mytask_mut2_ <- DNAString(c2s(mytask_mut2))
+mytask_ <- DNAString(c2s(mytask))
+aln <- Biostrings::pairwiseAlignment(mytask_,mytask_mut2_)
+pid(aln)
+nmismatch(aln)
+```
+## Question 5.
+Here, to find the number and proportion of sites that need to be altered to prevent the BLAST search from matching the gene of origin, we have to use functions for mutating and BLASTing the sequence. In order to do so, we need to write the blast index first with the help of write.fasta() command and then, run the blast search with N numbers of mismatches by using the command called nrow(res).
+```{r, chunk17, echo=TRUE}
+# first need to write the blast index
+write.fasta(mytask,names="mytask",file.out = "mytask.fa")
+makeblastdb(file="mytask.fa",dbtype = "nucl")
+# test with 100 mismatches
+mytask_mut <- mutator(myseq=mytask,100)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+# test with 130 mismatches
+mytask_mut <- mutator(myseq=mytask,130)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+# test with 150 mismatches
+mytask_mut <- mutator(myseq=mytask,150)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+# test with 180 mismatches
+mytask_mut <- mutator(myseq=mytask,180)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+# test with 200 mismatches
+mytask_mut <- mutator(myseq=mytask,200)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+# test with 210 mismatches
+mytask_mut <- mutator(myseq=mytask,210)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+# test with 220 mismatches
+mytask_mut <- mutator(myseq=mytask,220)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+# test with 250 mismatches
+mytask_mut <- mutator(myseq=mytask,250)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+# test with 300 mismatches
+mytask_mut <- mutator(myseq=mytask,300)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+# test with 350 mismatches
+mytask_mut <- mutator(myseq=mytask,350)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+# test with 400 mismatches
+mytask_mut <- mutator(myseq=mytask,400)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+# test with 450 mismatches
+mytask_mut <- mutator(myseq=mytask,450)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+# test with 500 mismatches
+mytask_mut <- mutator(myseq=mytask,500)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+# test with 550 mismatches
+mytask_mut <- mutator(myseq=mytask,550)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+# test with 600 mismatches
+mytask_mut <- mutator(myseq=mytask,600)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+# test with 700 mismatches
+mytask_mut <- mutator(myseq=mytask,700)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+# test with 1000 mismatches
+mytask_mut <- mutator(myseq=mytask,1000)
+res <- myblastn_tab(myseq = mytask_mut, db = "mytask.fa")
+res
+nrow(res)
+```
+
