@@ -158,7 +158,7 @@ source("https://raw.githubusercontent.com/markziemann/SLE712_files/master/bioinf
 ```
 ### Importing the whole set of E. coli gene DNA sequences
 here, we download the provided file, delete the fast file if any exists by unlinking, uncompress the file by gunziping and eventually create a blast database.
-```{r, chunk14, echo=TRUE}
+```{r, chunk13, echo=TRUE}
 # downloading the provided E. coli CDS file
 download.file("ftp://ftp.ensemblgenomes.org/pub/bacteria/release-42/fasta/bacteria_0_collection/escherichia_coli_str_k_12_substr_mg1655/cds/Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa.gz",
 destfile = "Escherichia_coli_str_k_12_substr_mg1655.ASM584v2.cds.all.fa.gz")
